@@ -24,6 +24,18 @@ namespace microwave.Controllers
             set => heatedMeal = value;
         }
 
+        public IActionResult IncreaseHeating(int time)
+        {
+            MicrowaveModel microwave = new();
+
+            int potency = microwave.CurrentPotency;
+
+            int calculatedTime = time + 30;
+            int timeIncreased = MicrowaveModel.CalculateHeatedMeal(calculatedTime, potency);
+
+            return Ok(timeIncreased);
+        }
+
         public IActionResult QuickStart()
         {
             int start = DefaultValidPotency(0) + 30;

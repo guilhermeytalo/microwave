@@ -11,7 +11,7 @@ public class MicrowaveModel
     public MicrowaveModel()
     {
         CurrentTime = 60;       // Default time is 60 seconds
-        CurrentPotency = 5;     // Default potency is 5
+        CurrentPotency = 10;     // Default potency is 5
         HeatedMeal = 0;         // Initial heated meal value
     }
 
