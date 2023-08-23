@@ -49,7 +49,7 @@ namespace microwave.Controllers
                 FormatTime(time);
             }
 
-            int heatedMealResult = MicrowaveModel.;
+            int heatedMealResult = MicrowaveModel.CalculateHeatedMeal(time, potency);
 
             return Ok($"Heated meal for {FormatTime(time)} with potency {potency}. Current heated meal: {heatedMealResult}");
         }

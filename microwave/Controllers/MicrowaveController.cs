@@ -17,7 +17,10 @@ namespace microwave.Controllers
             int time = 90;
             int potency = 5;
 
-            return Heating(time, potency);  // Example usage
+            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(time, potency);
+
+
+            return Ok(heatedMeal);
         }
     }
 }

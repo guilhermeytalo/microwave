@@ -15,9 +15,9 @@ public class MicrowaveModel
         HeatedMeal = 0;         // Initial heated meal value
     }
 
-    public int CalculateHeatedMeal()
+    public static int CalculateHeatedMeal(int time, int potency)
     {
-        return CurrentTime * CurrentPotency;
+        return time * potency;
     }
 }
 
