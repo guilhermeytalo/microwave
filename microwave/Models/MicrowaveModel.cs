@@ -1,12 +1,12 @@
-﻿namespace microwave.Models;
+﻿    namespace microwave.Models;
 
-public class MicrowaveModel
-{
-    
-    public int HeatedMeal
+    public class MicrowaveModel
     {
-        get;
-        set;
+    
+        public int HeatedMeal
+        {
+            get;
+            set;
+        }
     }
-}
 
