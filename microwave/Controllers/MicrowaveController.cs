@@ -4,23 +4,69 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using microwave.Models;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using microwave.Controllers;
 
 namespace microwave.Controllers
 {
-    public class MicrowaveController : MicrowaveBaseController  // Inherit from your abstract base controller
+    public class MicrowaveController : MicrowaveControllerBase
     {
+        public MicrowaveController(MicrowaveModel microwaveModel) : base(microwaveModel)
+        {
+            
+        }
+
         public IActionResult Index()
         {
-            // You can use methods and properties from the base controller here
-            int time = 90;
-            int potency = 5;
-
-            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(time, potency);
-
-
-            return Ok(heatedMeal);
+            int progress = _microwaveModel.GetHeatedMealProgress();
+            return Ok($"Heating progress: {progress}%");
         }
+
+        public IActionResult Pause()
+        {
+            if (!_microwaveModel.GetIsPaused())
+            {
+                _microwaveModel.IsPaused = true;
+                return Ok("Heating paused.");
+            }
+            else
+            {
+                return BadRequest("Heating is already paused.");
+            }
+        }
+
+        public IActionResult Resume()
+        {
+            if (_microwaveModel.GetIsPaused())
+            {
+                _microwaveModel.IsPaused = false;
+                return Ok("Heating resumed.");
+            }
+            else
+            {
+                return BadRequest("Heating is not paused.");
+            }
+        }
+
+        public IActionResult IncreaseTime(int additionalTime)
+        {
+            if (additionalTime <= 0)
+            {
+                return BadRequest("Please provide a valid time.");
+            }
+
+            int previousTime = _microwaveModel.CurrentTime;
+            _microwaveModel.CurrentTime += additionalTime;
+            int newHeatedMeal = MicrowaveModel.CalculateHeatedMeal(_microwaveModel.CurrentTime, _microwaveModel.CurrentPotency);
+
+            return Ok($"Increased heating time from {previousTime} to {_microwaveModel.CurrentTime}. New heated meal: {newHeatedMeal}");
+        }
+
+        public IActionResult QuickStartOverride()
+        {
+            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(30, 10);
+            return Ok($"Quick start heating. Heated meal: {heatedMeal}");
+        }
+
+
     }
 }

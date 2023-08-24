@@ -8,77 +8,81 @@ using microwave.Models;
 
 namespace microwave.Controllers
 {
-    public abstract class MicrowaveBaseController : Controller
+    public abstract class MicrowaveControllerBase : Controller
     {
-        protected const int MinimumRequiredTime = 1;
-        protected const int MaxRequiredTime = 120;
+        protected MicrowaveModel _microwaveModel;
 
-        protected const int MinPotency = 1;
-        protected const int MaxPotency = 10;
-
-        protected int heatedMeal = 0;
-
-        public int HeatedMeal
+        public MicrowaveControllerBase(MicrowaveModel microwaveModel)
         {
-            get => heatedMeal;
-            set => heatedMeal = value;
-        }
-
-        public IActionResult IncreaseHeating(int time)
-        {
-            MicrowaveModel microwave = new();
-
-            int potency = microwave.CurrentPotency;
-
-            int calculatedTime = time + 30;
-            int timeIncreased = MicrowaveModel.CalculateHeatedMeal(calculatedTime, potency);
-
-            return Ok(timeIncreased);
-        }
-
-        public IActionResult QuickStart()
-        {
-            int start = DefaultValidPotency(0) + 30;
-            return View("QuickStart", start);
+            _microwaveModel = microwaveModel ?? throw new ArgumentNullException(nameof(microwaveModel));
         }
 
         public IActionResult Heating(int time, int potency)
         {
             if (!IsValidTime(time))
             {
-                return BadRequest("Invalid time set a valid time.");
+                return BadRequest("Please set a valid time.");
             }
 
             if (!IsValidPotency(potency))
             {
-                return BadRequest("Invalid potency set a valid potency.");
+                return BadRequest("Please set a valid potency.");
             }
 
-            DefaultValidPotency(potency);
+            _microwaveModel.CurrentTime = time;
+            _microwaveModel.CurrentPotency = potency;
 
-            if (time > 60 && time < 100)
-            {
-                FormatTime(time);
-            }
+            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(time, potency);
 
-            int heatedMealResult = MicrowaveModel.CalculateHeatedMeal(time, potency);
-
-            return Ok($"Heated meal for {FormatTime(time)} with potency {potency}. Current heated meal: {heatedMealResult}");
+            return Ok($"Heated meal for {FormatTime(time)} with potency {potency}. Current heated meal: {heatedMeal}");
         }
+
+        public IActionResult PauseHeating()
+        {
+            _microwaveModel.IsPaused = true;
+            return Ok("Heating paused.");
+        }
+
+        public IActionResult ResumeHeating()
+        {
+            _microwaveModel.IsPaused = false;
+            return Ok("Heating resumed.");
+        }
+
+        public IActionResult IncreaseHeating(int time)
+        {
+            if (!IsValidTime(time))
+            {
+                return BadRequest("Please set a valid time.");
+            }
+
+            _microwaveModel.CurrentTime += time;
+
+            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(_microwaveModel.CurrentTime, _microwaveModel.CurrentPotency);
+
+            return Ok(heatedMeal);
+        }
+
+        public IActionResult QuickStart()
+        {
+            _microwaveModel.CurrentTime = 30;
+            _microwaveModel.CurrentPotency = 10;
+
+            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(_microwaveModel.CurrentTime, _microwaveModel.CurrentPotency);
+
+            return View("QuickStart", heatedMeal);
+        }
+
+        // Other methods...
 
         protected bool IsValidTime(int time)
         {
-            return time >= MinimumRequiredTime && time <= MaxRequiredTime;
+            return time >= MicrowaveModel.MinimumRequiredTime && time <= MicrowaveModel.MaxRequiredTime;
         }
 
         protected bool IsValidPotency(int potency)
         {
-            return potency >= MinPotency && potency <= MaxPotency;
-        }
-
-        protected int DefaultValidPotency(int potency)
-        {
-            return IsValidPotency(potency) ? potency : 10;
+            return potency >= MicrowaveModel.MinPotency && potency <= MicrowaveModel.MaxPotency;
         }
 
         protected string FormatTime(int seconds)
