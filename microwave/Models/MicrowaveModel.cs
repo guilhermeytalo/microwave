@@ -1,4 +1,4 @@
-﻿    namespace microwave.Models;
+﻿namespace microwave.Models;
 
 public class MicrowaveModel
 {
@@ -70,5 +70,19 @@ public class MicrowaveModel
         }
 
         return CurrentTime - (int)GetElapsedTime().TotalSeconds;
+    }
+
+    public string GetProgressString()
+    {
+        if (IsFinished)
+        {
+            return "Aquecimento concluído";
+        }
+
+        int dotsPerSecond = CurrentPotency; // Adjust this based on your design
+        int totalDots = CurrentTime * dotsPerSecond;
+
+        string progressString = new string('.', totalDots);
+        return progressString;
     }
 }

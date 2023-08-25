@@ -61,10 +61,14 @@ namespace microwave.Controllers
             return Ok($"Increased heating time from {previousTime} to {_microwaveModel.CurrentTime}. New heated meal: {newHeatedMeal}");
         }
 
-        public IActionResult QuickStartOverride()
+        public new IActionResult QuickStart()
         {
-            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(30, 10);
-            return Ok($"Quick start heating. Heated meal: {heatedMeal}");
+            _microwaveModel.CurrentTime = 30;
+            _microwaveModel.CurrentPotency = 10;
+
+            int heatedMeal = MicrowaveModel.CalculateHeatedMeal(_microwaveModel.CurrentTime, _microwaveModel.CurrentPotency);
+
+            return View("QuickStart", heatedMeal);
         }
 
 

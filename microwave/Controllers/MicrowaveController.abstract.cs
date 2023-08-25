@@ -34,6 +34,8 @@ namespace microwave.Controllers
 
             int heatedMeal = MicrowaveModel.CalculateHeatedMeal(time, potency);
 
+            _microwaveModel.GetProgressString();
+
             return Ok($"Heated meal for {FormatTime(time)} with potency {potency}. Current heated meal: {heatedMeal}");
         }
 
@@ -46,6 +48,7 @@ namespace microwave.Controllers
         public IActionResult ResumeHeating()
         {
             _microwaveModel.IsPaused = false;
+            _microwaveModel.GetProgressString();
             return Ok("Heating resumed.");
         }
 
@@ -57,6 +60,7 @@ namespace microwave.Controllers
             }
 
             _microwaveModel.CurrentTime += time;
+            _microwaveModel.GetProgressString();
 
             int heatedMeal = MicrowaveModel.CalculateHeatedMeal(_microwaveModel.CurrentTime, _microwaveModel.CurrentPotency);
 
@@ -67,13 +71,12 @@ namespace microwave.Controllers
         {
             _microwaveModel.CurrentTime = 30;
             _microwaveModel.CurrentPotency = 10;
+            _microwaveModel.GetProgressString();
 
             int heatedMeal = MicrowaveModel.CalculateHeatedMeal(_microwaveModel.CurrentTime, _microwaveModel.CurrentPotency);
 
             return View("QuickStart", heatedMeal);
         }
-
-        // Other methods...
 
         protected bool IsValidTime(int time)
         {
