@@ -79,7 +79,7 @@ public class MicrowaveModel
             return "Aquecimento concluído";
         }
 
-        int dotsPerSecond = CurrentPotency; // Adjust this based on your design
+        int dotsPerSecond = CurrentPotency;
         int totalDots = CurrentTime * dotsPerSecond;
 
         string progressString = new string('.', totalDots);
