@@ -1,44 +1,46 @@
-# README da Interface de Controle de Aquecimento
+# Microondas
 
 ## Introdução
 Este README fornece uma visão geral do projeto da interface de controle de aquecimento, detalhando suas características, funcionalidades e instruções de uso.
 
-## Criação da Interface
-- A interface permite que os usuários informem as configurações de tempo e potência de aquecimento.
-- O arranjo dos elementos da interface é flexível e fica a critério do desenvolvedor.
-- A entrada pode ser fornecida por meio de um teclado digital ou pelo teclado convencional.
-- O backend pode ser implementado em C# e integrado em aplicativos desktop ou web.
+## Tech Stack
+ Foi utilizado .net para a construção do backend
 
-## Iniciar o Aquecimento
-- Para iniciar o aquecimento, utilize uma configuração personalizada de tempo e potência.
-- O tempo de aquecimento varia de 1 segundo a 2 minutos.
-- A potência pode ser configurada entre 1 e 10.
-- Se a potência não for especificada, o valor padrão de 10 será utilizado.
-- O tempo entre 60 e 100 segundos é convertido para minutos.
+## Etapas feitas baseadas no desafio
+Nível 1
 
-## Validações
-- As configurações de tempo e potência estão sujeitas a validações.
-- Valores inválidos de tempo geram mensagens solicitando uma entrada válida.
-- Valores de potência fora da faixa geram mensagens de erro.
-- Se a potência não for fornecida, o valor padrão de 10 será utilizado.
+- [ ] Criação da Interface de Controle
+    - [ ] Layout para inserção de tempo e potência.
+    - [ ] Opção para entrada numérica por teclado digital ou manual.
+    - [ ] Escolha da linguagem para o desenvolvimento.
+    - [ ] Integração com o backend em C# (desktop ou web).
 
-## Início Rápido
-- Inicie o aquecimento rapidamente sem especificar tempo ou potência.
-- As configurações padrão para o início rápido são potência 10 e tempo 30 segundos.
+- [x] Método de Início do Aquecimento
+    - [x] Parâmetros: tempo e potência.
+    - [x] Restrições: tempo entre 1 segundo e 2 minutos.
+    - [x] Potência varia de 1 a 10 (padrão 10 se não informada).
+    - [x] Conversão de tempo entre 60 e 100 segundos para minutos (ex: 90 segundos para 1:30).
 
-## Extensão de Tempo
-- Ao iniciar o aquecimento durante um processo em andamento, 30 segundos são adicionados ao tempo restante.
+- [x] Validações de Operação
+    - [x] Mensagem de erro para tempo fora dos limites.
+    - [x] Mensagem de erro para potência inválida (fora de 1 a 10).
+    - [x] Potência padrão de 10 caso não informada.
 
-## Exibição do Progresso do Aquecimento
-- Mostre um indicador dinâmico de progresso baseado em strings durante o aquecimento.
-- O formato utiliza pontos com uma contagem baseada na configuração da potência.
-- A mensagem "Aquecimento concluído" é anexada após a conclusão do aquecimento.
+- [x] Início Rápido
+    - [x] Iniciar aquecimento com potência 10 e tempo de 30 segundos.
+    - [x] Acréscimo de Tempo durante o Aquecimento
+    - [x] Adicionar 30 segundos ao tempo em execução ao iniciar novo aquecimento.
 
-## Pausa e Cancelamento
-- Um único botão controla pausa e cancelamento.
-- A pausa durante o aquecimento permite retomar do mesmo ponto.
-- O cancelamento durante a pausa limpa as informações e interrompe o aquecimento.
-- O cancelamento antes de iniciar limpa as configurações de entrada.
+- [x] String Informativa do Processo de Aquecimento
+    - [x] Exibição de uma string com "." por segundo.
+    - [x] Número de caracteres por segundo baseado na potência.
+    - [x] Concatenar "Aquecimento concluído" ao final.
 
-## Conclusão
-Obrigado por explorar as funcionalidades e instruções de uso da interface de controle de aquecimento. Para mais detalhes, diretrizes de implementação e informações sobre como começar, consulte as seções relevantes acima.
+- [ ] Pausa e Cancelamento do Aquecimento
+    - [ ] Botão único para pausar/cancelar.
+    - [x] Pausar aquecimento em andamento; retomar se reiniciado.
+    - [ ] Cancelar aquecimento pausado, limpando informações.
+
+# Maiores Desafios
+O maior desafio foi construir de fato o projeto em C# por ser uma linguagem "nova" para mim, porém a documentação ajudou bastante além de outros sites para entender melhor como utiliza-la. Outro desafio foi deixar o criar abstrações porém isso me deu novas maneiras de identificar e melhorar códigos futuramente
+ 
